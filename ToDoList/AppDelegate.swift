@@ -3,7 +3,7 @@
 //  ToDoList
 //
 //  Created by Yogesh Rathore on 03/12/18.
-//  Copyright © 2018 Nissan Digital Hub. All rights reserved.
+//  Copyright © 2018 Yogesh Rathore. All rights reserved.
 //
 
 import UIKit
