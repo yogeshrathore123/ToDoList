@@ -11,10 +11,14 @@ import UIKit
 class ToDoViewController: UITableViewController {
 
     var itermArray = ["Apple", "Samsung", "Vivo", "Xiomi"]
+    let defaults = UserDefaults.standard
     
     override func viewDidLoad() {
         super.viewDidLoad()
         // Do any additional setup after loading the view, typically from a nib.
+        if let item = defaults.array(forKey: "ToDoListArray") as? [String]{
+            itermArray = item
+        }
     }
 
     // Mmark:: TableView DataSource Method
@@ -48,6 +52,7 @@ class ToDoViewController: UITableViewController {
             if addItemTxtField.text?.isEmpty == false{
                 self.itermArray.append(addItemTxtField.text!)
                 self.tableView.reloadData()
+                self.defaults.setValue(self.itermArray, forKey: "ToDoListArray")
             }else{
                 print("Empty TextField")
             }
