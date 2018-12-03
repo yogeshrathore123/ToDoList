@@ -10,7 +10,7 @@ import UIKit
 
 class ToDoViewController: UITableViewController {
 
-    let itermArray = ["Apple", "Samsung", "Vivo", "Xiomi"]
+    var itermArray = ["Apple", "Samsung", "Vivo", "Xiomi"]
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -40,6 +40,30 @@ class ToDoViewController: UITableViewController {
         // Mark:: For row select Animation
         tableView.deselectRow(at: indexPath, animated: true)
     }
-
+    @IBAction func AddItemBtnAction(_ sender: UIBarButtonItem) {
+        var addItemTxtField = UITextField()
+        
+        let alert = UIAlertController(title: "Add new item", message: "", preferredStyle: .alert)
+        let AddItemAction = UIAlertAction(title: "Add Item", style: .default) { (action) in
+            if addItemTxtField.text?.isEmpty == false{
+                self.itermArray.append(addItemTxtField.text!)
+                self.tableView.reloadData()
+            }else{
+                print("Empty TextField")
+            }
+        }
+        let CancelAction = UIAlertAction(title: "Cancel", style: .cancel) { (action) in
+            print("Cancel")
+        }
+        alert.addTextField { (alertTextField) in
+            alertTextField.placeholder = "Add New Item"
+            addItemTxtField = alertTextField
+        }
+        alert.addAction(AddItemAction)
+        alert.addAction(CancelAction)
+        self.present(alert, animated: true, completion: nil)
+        
+    }
+    
 }
 
