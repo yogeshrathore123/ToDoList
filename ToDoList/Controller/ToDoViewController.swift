@@ -12,6 +12,7 @@ class ToDoViewController: UITableViewController {
     
     var itemArray = [Item]()
     let defaults = UserDefaults.standard
+     let dataFilePath = FileManager.default.urls(for: .documentDirectory, in: .userDomainMask).first?.appendingPathComponent("Items.plist")
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -78,9 +79,12 @@ class ToDoViewController: UITableViewController {
         itemObj19.title = "n"
         itemArray.append(itemObj19)
         
-        if let item = defaults.array(forKey: "ToDoListArray") as? [Item]{
-            self.itemArray = item
-        }
+//        if let item = defaults.array(forKey: "ToDoListArray") as? [Item]{
+//            self.itemArray = item
+//        }
+        
+        loadItems()
+        print(dataFilePath)
         
     }
     
@@ -107,7 +111,7 @@ class ToDoViewController: UITableViewController {
         print(itemArray[indexPath.row])
         // Mark:: Checking condition checkmark is there or not
         itemArray[indexPath.row].done = !itemArray[indexPath.row].done
-        tableView.reloadData()
+        self.saveItem()
         // Mark:: For row select Animation
         tableView.deselectRow(at: indexPath, animated: true)
     }
@@ -120,13 +124,14 @@ class ToDoViewController: UITableViewController {
                 let itemObj = Item()
                 itemObj.title = addItemTxtField.text!
                 self.itemArray.append(itemObj)
-                self.defaults.set(self.itemArray, forKey: "ToDoListArray")
+                self.saveItem()
+               
                 
                 //  self.defaults.setValue(self.itemArray, forKey: "ToDoListArray")
             }else{
                 print("Empty TextField")
             }
-            self.tableView.reloadData()
+            
         }
         let CancelAction = UIAlertAction(title: "Cancel", style: .cancel) { (action) in
             print("Cancel")
@@ -139,6 +144,28 @@ class ToDoViewController: UITableViewController {
         alert.addAction(CancelAction)
         self.present(alert, animated: true, completion: nil)
         
+    }
+    
+    func saveItem(){
+        let encoder = PropertyListEncoder()
+        do {
+            let data = try encoder.encode(self.itemArray)
+            try data.write(to: self.dataFilePath!)
+        }catch{
+            print("Error encoding item array. \(error)")
+        }
+        self.tableView.reloadData()
+    }
+    
+    func loadItems(){
+        if let data = try? Data(contentsOf: dataFilePath!) {
+            let decoder = PropertyListDecoder()
+            do{
+                itemArray = try decoder.decode([Item].self, from: data)
+            }catch{
+                print("Error decoding item array, \(error)")
+            }
+        }
     }
     
 }
