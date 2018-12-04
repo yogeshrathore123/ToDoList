@@ -157,7 +157,7 @@ class ToDoViewController: UITableViewController {
         self.tableView.reloadData()
     }
     
-    //Mark:: load Item
+    //Mark:: load Item from plist
     func loadItems(){
         if let data = try? Data(contentsOf: dataFilePath!) {
             let decoder = PropertyListDecoder()
