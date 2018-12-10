@@ -134,7 +134,8 @@ class ToDoViewController: UITableViewController {
             
         }
         let CancelAction = UIAlertAction(title: "Cancel", style: .cancel) { (action) in
-            print("Cancel")
+            print("Cancell")
+        
         }
         alert.addTextField { (alertTextField) in
             alertTextField.placeholder = "Add New Item"
@@ -152,7 +153,7 @@ class ToDoViewController: UITableViewController {
             let data = try encoder.encode(self.itemArray)
             try data.write(to: self.dataFilePath!)
         }catch{
-            print("Error encoding item array. \(error)")
+            print("Error encodingg item array. \(error)")
         }
         self.tableView.reloadData()
     }
